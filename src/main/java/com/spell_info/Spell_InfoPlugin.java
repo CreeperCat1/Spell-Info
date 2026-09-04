@@ -60,21 +60,22 @@ public class Spell_InfoPlugin extends Plugin
 
 		int bgWidth = w - refComponents[0].getOriginalWidth();
 		int bgHeight = h - refComponents[0].getOriginalHeight();
-		int bgX = (x + refComponents[0].getOriginalX()) + (w - bgWidth) / 2;
-		int bgY = (y + refComponents[0].getOriginalY()) + (h - bgHeight) / 2;
+		int bgX = (x + refComponents[0].getRelativeX()) + (w - bgWidth) / 2;
+		int bgY = (y + refComponents[0].getRelativeY()) + (h - bgHeight) / 2;
 		spriteWidgets[0] = filterButtonParent.createChild(-1, WidgetType.GRAPHIC)
 				.setSpriteId(refComponents[0].getSpriteId())
 				.setPos(bgX, bgY)
 				.setSize(bgWidth, bgHeight)
 				.setYPositionMode(filterButton.getYPositionMode());
+		spriteWidgets[0].setForcedPosition(refComponents[0].getRelativeX(), refComponents[0].getRelativeY());
 		spriteWidgets[0].revalidate();
 
-		for (int i = 0; i < 8; i++)
+		for (int i = 1; i < 9; i++)
 		{
 			Widget c = spriteWidgets[i] = filterButtonParent.createChild(-1, WidgetType.GRAPHIC)
 					.setSpriteId(refComponents[i].getSpriteId())
 					.setSize(refComponents[i].getOriginalWidth(), refComponents[i].getOriginalHeight());
-			c.setForcedPosition(refComponents[i].getRelativeX() - 25, refComponents[i].getRelativeY());
+			c.setForcedPosition(refComponents[i].getRelativeX(), refComponents[i].getRelativeY());
 
 			spriteWidgets[i].revalidate();
 		}
