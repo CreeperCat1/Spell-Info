@@ -29,7 +29,7 @@ public class Spell_InfoPlugin extends Plugin
 	boolean infoActive;
 
 	@Subscribe
-	void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() != 218 || client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
 		{
@@ -39,7 +39,7 @@ public class Spell_InfoPlugin extends Plugin
 		addButton();
 	}
 
-	void addButton()
+	private void addButton()
 	{
 		Widget filterButton =  client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
 		filterButton.setForcedPosition(
@@ -97,30 +97,18 @@ public class Spell_InfoPlugin extends Plugin
 		filterButtonParent.revalidate();
 	}
 
-	void onClick(Widget[] spriteWidgets)
+	private void onClick(Widget[] spriteWidgets)
 	{
 		final int[] SPRITE_IDS_INACTIVE = {
-				1141,
-				1142,
-				1143,
-				1144,
-				1145,
-				1146,
-				1147,
-				1148,
-				1149
+				1141, 1142, 1143,
+				1144, 1145, 1146,
+				1147, 1148, 1149
 		};
 
 		final int[] SPRITE_IDS_ACTIVE = {
-				1150,
-				1151,
-				1152,
-				1153,
-				1154,
-				1155,
-				1156,
-				1157,
-				1158
+				1150, 1151, 1152,
+				1153, 1154, 1155,
+				1156, 1157, 1158
 		};
 
 		if (!infoActive)
@@ -142,17 +130,6 @@ public class Spell_InfoPlugin extends Plugin
 			clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
 		}
 	}
-
-	/*@Subscribe
-	public void onScriptPreFired(ScriptPreFired event) // works on pre or post fired
-	{
-		if (event.getScriptId() == 914) //914 is script called when changing tabs and 2610 is on magic tab (but only sometimes)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "spellbook going to open", null);
-			Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
-			filterButton.setOriginalX(50).revalidate();
-		}
-	}*/
 
 	@Override
 	protected void startUp() throws Exception
