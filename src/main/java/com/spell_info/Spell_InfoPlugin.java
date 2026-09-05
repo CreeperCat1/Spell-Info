@@ -12,7 +12,6 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.JavaScriptCallback;
-import net.runelite.api.gameval.SpriteID;
 
 @Slf4j
 @PluginDescriptor(
@@ -26,6 +25,8 @@ public class Spell_InfoPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	boolean infoActive;
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
@@ -45,33 +46,6 @@ public class Spell_InfoPlugin extends Plugin
 				filterButton.getRelativeX() + 50,
 				filterButton.getRelativeY()
 		);
-		//1141-1149
-		//1150-1158
-
-		final int[] SPRITE_IDS_INACTIVE = {
-				1141,
-				1142,
-				1143,
-				1144,
-				1145,
-				1146,
-				1147,
-				1148,
-				1149
-		};
-
-		final int[] SPRITE_IDS_ACTIVE = {
-				1150,
-				1151,
-				1152,
-				1153,
-				1154,
-				1155,
-				1156,
-				1157,
-				1158
-		};
-
 
 		final int FONT_COLOUR_INACTIVE = 0xff981f;
 		final int FONT_COLOUR_ACTIVE = 0xffffff;
@@ -111,24 +85,60 @@ public class Spell_InfoPlugin extends Plugin
 		text.setHasListener(true);
 		text.setOnMouseOverListener((JavaScriptCallback) ev ->
 		{
-			for (int i = 0; i <= 8; i++)
-			{
-				spriteWidgets[i].setSpriteId(SPRITE_IDS_ACTIVE[i]); //need active sprite ids
-			}
 			text.setTextColor(FONT_COLOUR_ACTIVE);
 		});
 		text.setOnMouseLeaveListener((JavaScriptCallback) ev ->
 		{
-			for (int i = 0; i <= 8; i++)
-			{
-				spriteWidgets[i].setSpriteId(SPRITE_IDS_INACTIVE[i]); //need inactive sprite ids
-			}
 			text.setTextColor(FONT_COLOUR_INACTIVE);
 		});
 
 		text.setAction(0, "Info");
-		text.setOnOpListener((JavaScriptCallback) ev -> log.debug("works")); //onClick.run());
+		text.setOnOpListener((JavaScriptCallback) ev -> onClick(spriteWidgets));
 		filterButtonParent.revalidate();
+	}
+
+	void onClick(Widget[] spriteWidgets)
+	{
+		final int[] SPRITE_IDS_INACTIVE = {
+				1141,
+				1142,
+				1143,
+				1144,
+				1145,
+				1146,
+				1147,
+				1148,
+				1149
+		};
+
+		final int[] SPRITE_IDS_ACTIVE = {
+				1150,
+				1151,
+				1152,
+				1153,
+				1154,
+				1155,
+				1156,
+				1157,
+				1158
+		};
+
+		if (!infoActive)
+		{
+			infoActive = true;
+			for (int i = 0; i <= 8; i++)
+			{
+				spriteWidgets[i].setSpriteId(SPRITE_IDS_ACTIVE[i]);
+			}
+		}
+		else
+		{
+			infoActive = false;
+			for (int i = 0; i <= 8; i++)
+			{
+				spriteWidgets[i].setSpriteId(SPRITE_IDS_INACTIVE[i]);
+			}
+		}
 	}
 
 	/*@Subscribe
