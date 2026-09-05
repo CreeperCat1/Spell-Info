@@ -29,13 +29,13 @@ public class Spell_InfoPlugin extends Plugin
 	boolean infoActive;
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() != 218 || client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
 		{
 			return;
 		}
-		clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
+		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
 		addButton();
 	}
 
@@ -130,6 +130,7 @@ public class Spell_InfoPlugin extends Plugin
 			{
 				spriteWidgets[i].setSpriteId(SPRITE_IDS_ACTIVE[i]);
 			}
+			clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false));
 		}
 		else
 		{
@@ -138,6 +139,7 @@ public class Spell_InfoPlugin extends Plugin
 			{
 				spriteWidgets[i].setSpriteId(SPRITE_IDS_INACTIVE[i]);
 			}
+			clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
 		}
 	}
 
@@ -155,11 +157,7 @@ public class Spell_InfoPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
-		{
-			return;
-		}
-		clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
+
 	}
 
 	@Override
