@@ -162,6 +162,7 @@ public class Spell_InfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		infoActive = false;
 		clientThread.invoke(() -> {
 			client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false);
 			removeButton();
