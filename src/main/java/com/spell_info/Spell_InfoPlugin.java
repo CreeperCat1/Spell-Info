@@ -26,24 +26,42 @@ public class Spell_InfoPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	boolean infoActive;
+	private static final int buttonDistance = 40;
+
+	private boolean infoActive;
+
+	private static final int[] SPRITE_IDS_INACTIVE = {
+			1141, 1142, 1143,
+			1144, 1145, 1146,
+			1147, 1148, 1149
+	};
+
+	private static final int[] SPRITE_IDS_ACTIVE = {
+			1150, 1151, 1152,
+			1153, 1154, 1155,
+			1156, 1157, 1158
+	};
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() != 218 || client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
+		Widget tooltip = client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP);
+
+		if (widgetLoaded.getGroupId() != 218 || tooltip == null)
 		{
 			return;
 		}
-		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
+
+		tooltip.setHidden(true);
 		addButton();
 	}
 
 	private void addButton()
 	{
 		Widget filterButton =  client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
+
 		filterButton.setForcedPosition(
-				filterButton.getRelativeX() + 40,
+				filterButton.getRelativeX() + buttonDistance,
 				filterButton.getRelativeY()
 		);
 
@@ -62,7 +80,7 @@ public class Spell_InfoPlugin extends Plugin
 					.setSpriteTiling(refComponents[i].getSpriteTiling())
 					.setSize(refComponents[i].getWidth(), refComponents[i].getHeight());
 			c.setForcedPosition(
-					filterButton.getRelativeX() + refComponents[i].getRelativeX() - 80,
+					filterButton.getRelativeX() + refComponents[i].getRelativeX() - (buttonDistance * 2),
 					filterButton.getRelativeY() + refComponents[i].getRelativeY()
 			);
 			c.revalidate();
@@ -77,7 +95,7 @@ public class Spell_InfoPlugin extends Plugin
 				.setYTextAlignment(refComponents[9].getYTextAlignment())
 				.setSize(refComponents[9].getWidth(), refComponents[9].getHeight());
 		text.setForcedPosition(
-				filterButton.getRelativeX() + refComponents[9].getRelativeX() - 80,
+				filterButton.getRelativeX() + refComponents[9].getRelativeX() - (buttonDistance * 2),
 				filterButton.getRelativeY() + refComponents[9].getRelativeY()
 		);
 		text.revalidate();
@@ -99,68 +117,31 @@ public class Spell_InfoPlugin extends Plugin
 
 	private void onClick(Widget[] spriteWidgets)
 	{
-		final int[] SPRITE_IDS_INACTIVE = {
-				1141, 1142, 1143,
-				1144, 1145, 1146,
-				1147, 1148, 1149
-		};
+		int[] spriteIds = infoActive ? SPRITE_IDS_INACTIVE : SPRITE_IDS_ACTIVE;
 
-		final int[] SPRITE_IDS_ACTIVE = {
-				1150, 1151, 1152,
-				1153, 1154, 1155,
-				1156, 1157, 1158
-		};
+		for (int i = 0; i <= 8; i++)
+		{
+			spriteWidgets[i].setSpriteId(spriteIds[i]);
+		}
 
-		if (!infoActive)
-		{
-			infoActive = true;
-			for (int i = 0; i <= 8; i++)
-			{
-				spriteWidgets[i].setSpriteId(SPRITE_IDS_ACTIVE[i]);
-			}
-			clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false));
-		}
-		else
-		{
-			infoActive = false;
-			for (int i = 0; i <= 8; i++)
-			{
-				spriteWidgets[i].setSpriteId(SPRITE_IDS_INACTIVE[i]);
-			}
-			clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
-		}
+		clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(infoActive));
+		infoActive = !infoActive;
 	}
 
 	private void removeButton()
 	{
-		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP);
-		filterButton.setForcedPosition(filterButton.getRelativeX() - 40, filterButton.getRelativeY());
+
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		/*
-		//onWidgetLoaded();     WidgetLoaded(groupId=218)
-		if (client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
-		{
-			return;
-		}
-		clientThread.invoke (() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
-		addButton();
-		 */
+
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		/*
-		if (client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
-		{
-			return;
-		}
-		clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false));
-		removeButton();
-		 */
+
 	}
 }
