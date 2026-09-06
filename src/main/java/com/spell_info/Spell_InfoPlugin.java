@@ -43,7 +43,7 @@ public class Spell_InfoPlugin extends Plugin
 	{
 		Widget filterButton =  client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
 		filterButton.setForcedPosition(
-				filterButton.getRelativeX() + 50,
+				filterButton.getRelativeX() + 40,
 				filterButton.getRelativeY()
 		);
 
@@ -62,7 +62,7 @@ public class Spell_InfoPlugin extends Plugin
 					.setSpriteTiling(refComponents[i].getSpriteTiling())
 					.setSize(refComponents[i].getWidth(), refComponents[i].getHeight());
 			c.setForcedPosition(
-					filterButton.getRelativeX() + refComponents[i].getRelativeX() - 100,
+					filterButton.getRelativeX() + refComponents[i].getRelativeX() - 80,
 					filterButton.getRelativeY() + refComponents[i].getRelativeY()
 			);
 			c.revalidate();
@@ -77,7 +77,7 @@ public class Spell_InfoPlugin extends Plugin
 				.setYTextAlignment(refComponents[9].getYTextAlignment())
 				.setSize(refComponents[9].getWidth(), refComponents[9].getHeight());
 		text.setForcedPosition(
-				filterButton.getRelativeX() + refComponents[9].getRelativeX() - 100,
+				filterButton.getRelativeX() + refComponents[9].getRelativeX() - 80,
 				filterButton.getRelativeY() + refComponents[9].getRelativeY()
 		);
 		text.revalidate();
@@ -131,19 +131,36 @@ public class Spell_InfoPlugin extends Plugin
 		}
 	}
 
+	private void removeButton()
+	{
+		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP);
+		filterButton.setForcedPosition(filterButton.getRelativeX() - 40, filterButton.getRelativeY());
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
-
+		/*
+		//onWidgetLoaded();     WidgetLoaded(groupId=218)
+		if (client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
+		{
+			return;
+		}
+		clientThread.invoke (() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true));
+		addButton();
+		 */
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		/*
 		if (client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP) == null)
 		{
 			return;
 		}
 		clientThread.invoke(() -> client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false));
+		removeButton();
+		 */
 	}
 }
