@@ -1,17 +1,16 @@
 package com.spell_info;
 
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.api.Client;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.WidgetType;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
 
 @Slf4j
@@ -27,9 +26,11 @@ public class Spell_InfoPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	private static final int buttonDistance = 40;
+	private Widget filterButtonParent;
 
 	private boolean infoActive;
+
+	private static final int buttonDistance = 40;
 
 	private static final int FONT_COLOUR_INACTIVE = 0xff981f;
 
@@ -50,14 +51,12 @@ public class Spell_InfoPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		Widget tooltip = client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP);
-
-		if (widgetLoaded.getGroupId() != 218 || tooltip == null)
+		if (widgetLoaded.getGroupId() != 218)
 		{
 			return;
 		}
 
-		tooltip.setHidden(true);
+		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
 		addButton();
 	}
 
@@ -70,8 +69,8 @@ public class Spell_InfoPlugin extends Plugin
 				filterButton.getRelativeY()
 		);
 
-		Widget filterButtonParent = filterButton.getParent();
-		Widget[] refComponents = filterButton.getChildren(); //maybe final for both and move to top of addbutton? something about c ssame for text
+		filterButtonParent = filterButton.getParent();
+		Widget[] refComponents = filterButton.getChildren();
 
 		final Widget[] spriteWidgets = new Widget[9];
 
@@ -119,15 +118,15 @@ public class Spell_InfoPlugin extends Plugin
 
 	private void onClick(Widget[] spriteWidgets)
 	{
-		int[] spriteIds = infoActive ? SPRITE_IDS_INACTIVE : SPRITE_IDS_ACTIVE;
+		infoActive = !infoActive;
+		int[] spriteIds = infoActive ? SPRITE_IDS_ACTIVE : SPRITE_IDS_INACTIVE;
 
 		for (int i = 0; i <= 8; i++)
 		{
 			spriteWidgets[i].setSpriteId(spriteIds[i]);
 		}
 
-		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(infoActive);
-		infoActive = !infoActive;//move infoactive to top maybe
+		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(!infoActive);
 	}
 
 	private void removeButton()
@@ -139,22 +138,14 @@ public class Spell_InfoPlugin extends Plugin
 				filterButton.getRelativeY()
 		);
 
-		Widget filterParent = filterButton.getParent();
-		filterParent.deleteAllChildren();
+		filterButtonParent.deleteAllChildren();
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		Widget tooltip = client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP);
-
-		if (tooltip == null)
-		{
-			return;
-		}
-
 		clientThread.invoke(() -> {
-			tooltip.setHidden(true);
+			client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
 			addButton();
 		});
 	}
@@ -163,6 +154,7 @@ public class Spell_InfoPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoActive = false;
+
 		clientThread.invoke(() -> {
 			client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false);
 			removeButton();
