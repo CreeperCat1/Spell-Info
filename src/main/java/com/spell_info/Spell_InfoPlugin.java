@@ -26,9 +26,13 @@ public class Spell_InfoPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	private Widget filterButtonParent;
-
 	private boolean infoActive;
+
+	private int filterButtonOX;
+
+	private int filterButtonOY;
+
+	private boolean positionCached;
 
 	private static final int buttonDistance = 40;
 
@@ -62,17 +66,23 @@ public class Spell_InfoPlugin extends Plugin
 	private void addButton()
 	{
 		infoActive = false;
-
 		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
 
-		Widget filterButton =  client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
+		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
+
+		if (!positionCached)
+		{
+			filterButtonOX = filterButton.getRelativeX();
+			filterButtonOY = filterButton.getRelativeY();
+			positionCached = true;
+		}
 
 		filterButton.setForcedPosition(
-				filterButton.getRelativeX() + buttonDistance,
-				filterButton.getRelativeY()
+				filterButtonOX + buttonDistance,
+				filterButtonOY
 		);
 
-		filterButtonParent = filterButton.getParent();
+		Widget filterButtonParent = filterButton.getParent();
 		Widget[] refComponents = filterButton.getChildren();
 
 		final Widget[] spriteWidgets = new Widget[9];
@@ -84,8 +94,8 @@ public class Spell_InfoPlugin extends Plugin
 					.setSpriteTiling(refComponents[i].getSpriteTiling())
 					.setSize(refComponents[i].getWidth(), refComponents[i].getHeight());
 			c.setForcedPosition(
-					filterButton.getRelativeX() + refComponents[i].getRelativeX() - (buttonDistance * 2),
-					refComponents[i].getRelativeY()
+					filterButtonOX + refComponents[i].getRelativeX() - buttonDistance,
+					filterButtonOY + refComponents[i].getRelativeY()
 			);
 			c.revalidate();
 		}
@@ -99,8 +109,8 @@ public class Spell_InfoPlugin extends Plugin
 				.setYTextAlignment(refComponents[9].getYTextAlignment())
 				.setSize(refComponents[9].getWidth(), refComponents[9].getHeight());
 		text.setForcedPosition(
-				filterButton.getRelativeX() + refComponents[9].getRelativeX() - (buttonDistance * 2),
-				refComponents[9].getRelativeY()
+				filterButtonOX + refComponents[9].getRelativeX() - buttonDistance,
+				filterButtonOY + refComponents[9].getRelativeY()
 		);
 		text.revalidate();
 
@@ -137,10 +147,11 @@ public class Spell_InfoPlugin extends Plugin
 		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false);
 
 		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
+		Widget filterButtonParent = filterButton.getParent();
 
 		filterButton.setForcedPosition(
-				filterButton.getRelativeX() - buttonDistance,
-				filterButton.getRelativeY()
+				filterButtonOX,
+				filterButtonOY
 		);
 
 		filterButtonParent.deleteAllChildren();
