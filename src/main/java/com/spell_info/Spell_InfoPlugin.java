@@ -138,6 +138,7 @@ public class Spell_InfoPlugin extends Plugin
 		{
 			spriteWidgets[i].setSpriteId(spriteIds[i]);
 		}
+		client.playSoundEffect(2266);
 
 		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(!infoActive);
 	}
