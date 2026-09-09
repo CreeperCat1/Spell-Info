@@ -56,12 +56,15 @@ public class Spell_InfoPlugin extends Plugin
 			return;
 		}
 
-		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
 		addButton();
 	}
 
 	private void addButton()
 	{
+		infoActive = false;
+
+		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
+
 		Widget filterButton =  client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
 
 		filterButton.setForcedPosition(
@@ -131,6 +134,8 @@ public class Spell_InfoPlugin extends Plugin
 
 	private void removeButton()
 	{
+		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false);
+
 		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
 
 		filterButton.setForcedPosition(
@@ -145,7 +150,6 @@ public class Spell_InfoPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		clientThread.invoke(() -> {
-			client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
 			addButton();
 		});
 	}
@@ -153,10 +157,7 @@ public class Spell_InfoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		infoActive = false;
-
 		clientThread.invoke(() -> {
-			client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false);
 			removeButton();
 		});
 	}
