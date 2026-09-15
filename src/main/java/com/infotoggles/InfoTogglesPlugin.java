@@ -1,4 +1,4 @@
-package com.spell_info;
+package com.infotoggles;
 
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +15,10 @@ import net.runelite.api.widgets.JavaScriptCallback;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Spell Info"
+	name = "Info Toggles"
 )
 
-public class Spell_InfoPlugin extends Plugin
+public class InfoTogglesPlugin extends Plugin
 {
 	@Inject
 	private Client client;

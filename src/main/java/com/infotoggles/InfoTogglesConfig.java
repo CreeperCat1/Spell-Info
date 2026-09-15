@@ -1,11 +1,11 @@
-package com.spell_info;
+package com.infotoggles;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("example")
-public interface Spell_InfoConfig extends Config
+public interface InfoTogglesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "greeting",
