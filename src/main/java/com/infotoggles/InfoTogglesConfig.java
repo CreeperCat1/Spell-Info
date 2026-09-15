@@ -4,16 +4,28 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("example")
+@ConfigGroup("InfoTogglesConfig")
 public interface InfoTogglesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "greeting",
-		name = "Welcome Greeting",
-		description = "The message to show to the user when they login"
+		keyName = "spellInfo",
+		name = "Show Spell Info",
+		description = "Enable to show the spell Info button",
+		position = 1
 	)
-	default String greeting()
+	default boolean spellInfo()
 	{
-		return "Hello";
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "prayerInfo",
+			name = "Show Prayer Info",
+			description = "Enable to show the prayer Info button",
+			position = 2
+	)
+	default boolean prayerInfo()
+	{
+		return false;
 	}
 }
