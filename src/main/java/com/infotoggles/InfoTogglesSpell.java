@@ -1,8 +1,6 @@
 package com.infotoggles;
 
 import javax.inject.Inject;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.api.Client;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
@@ -14,9 +12,6 @@ public class InfoTogglesSpell
 {
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
 
 	private boolean infoActive;
 

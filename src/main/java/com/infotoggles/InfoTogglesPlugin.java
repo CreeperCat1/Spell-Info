@@ -42,10 +42,10 @@ public class InfoTogglesPlugin extends Plugin
 			return;
 		}
 
-		addButton();
+		addAllButtons();
 	}
 
-	private void addButton()
+	private void addAllButtons()
 	{
 		if (config.spellInfo())
 		{
@@ -58,7 +58,7 @@ public class InfoTogglesPlugin extends Plugin
 
 	}
 
-	private void removeButton()
+	private void removeAllButtons()
 	{
 		spell.removeButton();
 	}
@@ -67,7 +67,7 @@ public class InfoTogglesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		clientThread.invoke(() -> {
-			addButton();
+			addAllButtons();
 		});
 	}
 
@@ -75,7 +75,7 @@ public class InfoTogglesPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientThread.invoke(() -> {
-			removeButton();
+			removeAllButtons();
 		});
 	}
 
