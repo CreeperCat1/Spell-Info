@@ -1,11 +1,6 @@
 package com.infotoggles;
 
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.api.Client;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InterfaceID;
@@ -13,18 +8,10 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
 
-@Slf4j
-@PluginDescriptor(
-		name = "Info Toggles"
-)
-
-public class InfoTogglesPrayer extends Plugin
+public class InfoTogglesPrayer
 {
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
 
 	private boolean infoActive;
 
@@ -34,7 +21,7 @@ public class InfoTogglesPrayer extends Plugin
 
 	private boolean positionCached;
 
-	private static final int buttonDistance = 40;
+	private static final int buttonDistance = 15;
 
 	private static final int FONT_COLOUR_INACTIVE = 0xff981f;
 
@@ -145,21 +132,5 @@ public class InfoTogglesPrayer extends Plugin
 		);
 
 		filterButtonParent.deleteAllChildren();
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		clientThread.invoke(() -> {
-			addButton();
-		});
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		clientThread.invoke(() -> {
-			removeButton();
-		});
 	}
 }

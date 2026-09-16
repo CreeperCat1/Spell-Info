@@ -1,8 +1,11 @@
 package com.infotoggles;
 
 import javax.inject.Inject;
+import javax.swing.*; //remove
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.MenuAction; //remove
+import net.runelite.api.MenuEntry; //remove
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.Plugin;
@@ -11,6 +14,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.api.Client;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.gameval.VarClientID; //remove
 
 @Slf4j
 @PluginDescriptor(
@@ -43,6 +47,41 @@ public class InfoTogglesPlugin extends Plugin
 		}
 
 		addAllButtons();
+	}
+
+	@Subscribe //remove entire onGameTick
+	public void onGameTick(GameTick gameTick)
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		int last = menuEntries.length - 1;
+
+		if (last < 0)
+		{
+			return;
+		}
+
+		MenuEntry menuEntry = menuEntries[last];
+		String target = menuEntry.getTarget();
+		String option = menuEntry.getOption();
+		MenuAction type = menuEntry.getType();
+		log.debug("Target: " + target.toString() + " Option: " + option.toString() + " Type: " + type.toString());
+
+		int tooltipTimeout = client.getVarcIntValue(VarClientID.TOOLTIP_TIME);
+		/*if (tooltipTimeout > client.getGameCycle())
+		{
+			log.debug("timeout is bigger");
+			return;
+		}*/
+
+		// If this varc is set, a tooltip is already being displayed
+		int tooltipDisplayed = client.getVarcIntValue(VarClientID.TOOLTIP_BUILT);
+		if (tooltipDisplayed == 1)
+		{
+			log.debug("alrday displayer");
+			return;
+		}
+		log.debug("completed and showing tooltip");
+		//adds tooltip
 	}
 
 	private void addAllButtons()
