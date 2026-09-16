@@ -52,23 +52,12 @@ public class InfoTogglesPrayer extends Plugin
 			1156, 1157, 1158
 	};
 
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
-	{
-		if (widgetLoaded.getGroupId() != 218)
-		{
-			return;
-		}
-
-		addButton();
-	}
-
-	private void addButton()
+	public void addButton()
 	{
 		infoActive = false;
-		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(true);
+		client.getWidget(InterfaceID.Prayerbook.TOOLTIP).setHidden(true);
 
-		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
+		Widget filterButton = client.getWidget(InterfaceID.Prayerbook.FILTERBUTTON);
 
 		if (!positionCached)
 		{
@@ -140,14 +129,14 @@ public class InfoTogglesPrayer extends Plugin
 		}
 		client.playSoundEffect(2266);
 
-		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(!infoActive);
+		client.getWidget(InterfaceID.Prayerbook.TOOLTIP).setHidden(!infoActive);
 	}
 
-	private void removeButton()
+	public void removeButton()
 	{
-		client.getWidget(InterfaceID.MagicSpellbook.TOOLTIP).setHidden(false);
+		client.getWidget(InterfaceID.Prayerbook.TOOLTIP).setHidden(false);
 
-		Widget filterButton = client.getWidget(InterfaceID.MagicSpellbook.FILTERBUTTON);
+		Widget filterButton = client.getWidget(InterfaceID.Prayerbook.FILTERBUTTON);
 		Widget filterButtonParent = filterButton.getParent();
 
 		filterButton.setForcedPosition(

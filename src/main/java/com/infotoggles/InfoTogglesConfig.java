@@ -21,7 +21,8 @@ public interface InfoTogglesConfig extends Config
 	@ConfigItem(
 			keyName = "prayerInfo",
 			name = "Show Prayer Info",
-			description = "Enable to show the prayer Info button",
+			description = "Enable to show the prayer Info button.<br>"
+				+ "(WARNING: Must enable \"Show Prayer Tooltips\" in settings to work)",
 			position = 2
 	)
 	default boolean prayerInfo()

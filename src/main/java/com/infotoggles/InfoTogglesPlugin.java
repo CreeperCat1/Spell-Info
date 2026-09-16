@@ -51,6 +51,10 @@ public class InfoTogglesPlugin extends Plugin
 		{
 			spell.addButton();
 		}
+		if (config.prayerInfo())
+		{
+			prayer.addButton();
+		}
 	}
 
 	private void onClick(Widget[] spriteWidgets)
@@ -61,6 +65,7 @@ public class InfoTogglesPlugin extends Plugin
 	private void removeAllButtons()
 	{
 		spell.removeButton();
+		prayer.removeButton();
 	}
 
 	@Override
